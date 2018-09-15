@@ -1,7 +1,7 @@
 {
-  "name": "react_literature",
+  "name": "react_node_login_boilerplate",
   "version": "1.0.0",
-  "description": "React tool for better literature research",
+  "description": "A simple Material Design MERN boilerplate for apps with login",
   "main": "server.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
