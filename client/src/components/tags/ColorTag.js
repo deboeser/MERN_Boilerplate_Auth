@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import classnames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 
-import { backgroundColorHoverClasses, colors } from "./colors";
+import { backgroundColorHoverClasses, colors } from "../common/colors";
 
 const styles = theme => ({
   boundingBox: {
