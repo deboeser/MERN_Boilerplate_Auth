@@ -14,6 +14,7 @@ import { setCurrentUser, logoutUser } from "./actions/authActions";
 
 import AuthPage from "./components/auth/AuthPage";
 import Navigation from "./components/navbar/Navigation";
+import Snack from "./components/common/Snack";
 
 import "./App.css";
 
@@ -55,6 +56,7 @@ class App extends Component {
               <Route exact path="/auth" component={AuthPage} />
             </div>
           </Router>
+          <Snack />
         </MuiThemeProvider>
       </Provider>
     );

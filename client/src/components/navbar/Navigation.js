@@ -6,7 +6,6 @@ import { withStyles } from "@material-ui/core/styles";
 import classNames from "classnames";
 
 import Button from "@material-ui/core/Button";
-import Snackbar from "@material-ui/core/Snackbar";
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
@@ -16,7 +15,6 @@ import { triggerSnack } from "../../actions/snackActions";
 import NavBar from "./NavBar";
 import NavDrawer from "./NavDrawer";
 import ColorSelector from "../tags/ColorSelector";
-import SnackbarWrapper from "../common/SnackbarWrapper";
 import { colorClasses } from "../common/colors";
 
 const styles = theme => ({
@@ -46,9 +44,6 @@ const styles = theme => ({
     overflowY: "scroll"
   },
   contentBody: {},
-  snackbar: {
-    zIndex: 1000000
-  },
   textUnderlined: {
     textDecorationLine: "underline"
   },
@@ -74,9 +69,6 @@ class Navigation extends React.Component {
   }
 
   componentWillReceiveProps(nextProps) {
-    if (nextProps.snack) {
-      this.setState({ snack: nextProps.snack });
-    }
     if (nextProps.auth) {
       this.setState({ auth: nextProps.auth });
     }
@@ -90,16 +82,8 @@ class Navigation extends React.Component {
     this.setState({ open: false });
   };
 
-  openSuccessSnack = newSnack => {
+  openSnack = newSnack => {
     this.props.triggerSnack(newSnack);
-  };
-
-  closeSuccessSnack = (e, reason) => {
-    if (reason === "clickaway") {
-      return;
-    }
-
-    this.props.triggerSnack({ type: "", msg: "" });
   };
 
   onChange = (field, val) => {
@@ -206,22 +190,6 @@ class Navigation extends React.Component {
           </Button> */}
           </div>
         </main>
-        <Snackbar
-          anchorOrigin={{
-            vertical: "bottom",
-            horizontal: "left"
-          }}
-          className={classes.snackbar}
-          open={this.props.snack.open}
-          autoHideDuration={this.props.snack.duration}
-          onClose={this.closeSuccessSnack}
-        >
-          <SnackbarWrapper
-            onClose={this.closeSuccessSnack}
-            variant={this.props.snack.type}
-            message={this.props.snack.msg}
-          />
-        </Snackbar>
       </div>
     );
   }
@@ -233,8 +201,7 @@ Navigation.propTypes = {
 };
 
 const mapStateToProps = state => ({
-  auth: state.auth,
-  snack: state.snack
+  auth: state.auth
 });
 
 const mapDispatchToProps = {
