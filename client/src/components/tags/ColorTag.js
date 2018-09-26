@@ -7,6 +7,7 @@ import { backgroundColorHoverClasses, colors } from "../common/colors";
 
 const styles = theme => ({
   boundingBox: {
+    position: "relative",
     width: theme.spacing.unit * 5,
     height: theme.spacing.unit * 5,
     display: "inline-block"
