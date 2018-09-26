@@ -1,5 +1,8 @@
 import React, { Component } from "react";
 import withStyles from "@material-ui/core/styles/withStyles";
+import { connect } from "react-redux";
+import { compose } from "redux";
+import { withRouter } from "react-router-dom";
 
 import Paper from "@material-ui/core/Paper";
 import Grid from "@material-ui/core/Grid";
@@ -20,6 +23,12 @@ const styles = theme => ({
 });
 
 class AuthPage extends Component {
+  componentDidMount() {
+    if (this.props.auth.isAuthenticated) {
+      this.props.history.push("/");
+    }
+  }
+
   render() {
     const { classes } = this.props;
 
@@ -37,4 +46,14 @@ class AuthPage extends Component {
   }
 }
 
-export default withStyles(styles)(AuthPage);
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default compose(
+  withStyles(styles),
+  connect(
+    mapStateToProps,
+    null
+  )
+)(withRouter(AuthPage));
