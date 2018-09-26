@@ -38,7 +38,7 @@ class FormDialog extends React.Component {
       <div>
         <Dialog open={this.state.open} onClose={this.handleClose}>
           <DialogContent className={classes.dialog}>
-            <AuthSwitcher />
+            <AuthSwitcher closeDialog={() => this.handleClose()} />
           </DialogContent>
         </Dialog>
       </div>

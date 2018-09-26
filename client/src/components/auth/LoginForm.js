@@ -70,7 +70,7 @@ class LoginForm extends Component {
       password: this.state.password
     };
 
-    this.props.loginUser(loginData, this.props.history);
+    this.props.loginUser(loginData, this.props.closeDialog);
   };
 
   render() {
@@ -128,7 +128,8 @@ class LoginForm extends Component {
 }
 
 LoginForm.propTypes = {
-  recomputeHeight: PropTypes.func.isRequired
+  recomputeHeight: PropTypes.func.isRequired,
+  closeDialog: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

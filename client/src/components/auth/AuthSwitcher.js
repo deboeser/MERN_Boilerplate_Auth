@@ -52,12 +52,6 @@ class AuthSwitcher extends React.Component {
     this.setState({ value: index });
   };
 
-  componentWillReceiveProps(nextProps) {
-    if (nextProps.errors) {
-      // this.Swiper.updateHeight();
-    }
-  }
-
   recomputeHeight = () => {
     if (!isEmpty(this.refs.swiper)) {
       this.refs.swiper.updateHeight();
@@ -82,7 +76,6 @@ class AuthSwitcher extends React.Component {
           </Tabs>
         </AppBar>
         <SwipeableViews
-          // ref={node => (this.Swiper = node)}
           ref="swiper"
           axis={theme.direction === "rtl" ? "x-reverse" : "x"}
           index={this.state.value}
@@ -90,10 +83,16 @@ class AuthSwitcher extends React.Component {
           animateHeight
         >
           <TabContainer dir={theme.direction}>
-            <LoginForm recomputeHeight={this.recomputeHeight} />
+            <LoginForm
+              recomputeHeight={this.recomputeHeight}
+              closeDialog={this.props.closeDialog}
+            />
           </TabContainer>
           <TabContainer dir={theme.direction}>
-            <RegisterForm recomputeHeight={this.recomputeHeight} />
+            <RegisterForm
+              recomputeHeight={this.recomputeHeight}
+              changeToLogin={this.handleChange}
+            />
           </TabContainer>
         </SwipeableViews>
       </div>
@@ -103,7 +102,8 @@ class AuthSwitcher extends React.Component {
 
 AuthSwitcher.propTypes = {
   classes: PropTypes.object.isRequired,
-  theme: PropTypes.object.isRequired
+  theme: PropTypes.object.isRequired,
+  closeDialog: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

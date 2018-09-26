@@ -35,7 +35,6 @@ const styles = theme => ({
 class RegisterForm extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       email: "",
       password: "",
@@ -54,6 +53,12 @@ class RegisterForm extends Component {
     }
   }
 
+  componentDidUpdate() {
+    if (!isEmpty(this.state.errors)) {
+      this.props.recomputeHeight();
+    }
+  }
+
   onChange = e => {
     e.preventDefault();
     this.setState({ [e.target.name]: e.target.value });
@@ -68,14 +73,16 @@ class RegisterForm extends Component {
       password2: this.state.password2
     };
 
-    this.props.registerUser(newUser);
+    this.props.registerUser(newUser, this.registrationSuccessful);
   };
 
-  componentDidUpdate() {
-    if (!isEmpty(this.state.errors)) {
-      this.props.recomputeHeight();
-    }
-  }
+  registrationSuccessful = () => {
+    this.props.triggerSnack({
+      type: "success",
+      msg: "Registration successful! You can now login."
+    });
+    this.props.changeToLogin(null, 0);
+  };
 
   render() {
     const { classes } = this.props;
@@ -126,17 +133,6 @@ class RegisterForm extends Component {
             >
               Register
             </LoadingButton>
-            {/* <Button
-              onClick={() =>
-                this.props.triggerSnack({
-                  type: "warning",
-                  msg: "YEAH",
-                  duration: 100000
-                })
-              }
-            >
-              Open success snackbar
-            </Button> */}
           </div>
         </form>
       </div>
@@ -145,7 +141,8 @@ class RegisterForm extends Component {
 }
 
 RegisterForm.propTypes = {
-  recomputeHeight: PropTypes.func.isRequired
+  recomputeHeight: PropTypes.func.isRequired,
+  changeToLogin: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({

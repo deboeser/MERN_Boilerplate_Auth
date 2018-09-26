@@ -3,7 +3,8 @@ import {
   GET_ERRORS,
   SET_AUTH_LOADING,
   SET_CURRENT_USER,
-  RESET_ERRORS
+  RESET_ERRORS,
+  UNSET_AUTH_LOADING
 } from "./types";
 import setAuthToken from "../utils/setAuthToken";
 import jwt_decode from "jwt-decode";
@@ -20,7 +21,11 @@ const registerUser = (userData, callback) => dispatch => {
   dispatch(setLoading());
   axios
     .post("/api/auth/register", userData)
-    .then(res => console.log("TODO: Success Registration Successful"))
+    .then(res => {
+      dispatch(unsetLoading());
+      dispatch({ type: RESET_ERRORS });
+      callback();
+    })
     .catch(err =>
       dispatch({
         type: GET_ERRORS,
@@ -36,7 +41,7 @@ const setCurrentUser = decoded => {
   };
 };
 
-const loginUser = (userData, history) => dispatch => {
+const loginUser = (userData, callback) => dispatch => {
   dispatch(setLoading());
   axios
     .post("/api/auth/login", userData)
@@ -47,7 +52,7 @@ const loginUser = (userData, history) => dispatch => {
       const decoded = jwt_decode(token);
       dispatch(setCurrentUser(decoded));
       dispatch({ type: RESET_ERRORS });
-      history.push("/auth");
+      callback();
     })
     .catch(err => {
       console.log(err);
