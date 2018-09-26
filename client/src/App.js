@@ -52,7 +52,7 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <Router>
             <div className="App" id="app">
-              <Route exact path="/" component={Navigation} />
+              <Route path="/app" component={Navigation} />
               <Route exact path="/auth" component={AuthPage} />
             </div>
           </Router>

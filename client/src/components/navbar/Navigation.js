@@ -3,19 +3,15 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withStyles } from "@material-ui/core/styles";
-import classNames from "classnames";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 
+// eslint-disable-next-line
 import Button from "@material-ui/core/Button";
-import Typography from "@material-ui/core/Typography";
-import Switch from "@material-ui/core/Switch";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Divider from "@material-ui/core/Divider";
 
 import { triggerSnack } from "../../actions/snackActions";
 import NavBar from "./NavBar";
 import NavDrawer from "./NavDrawer";
-import ColorSelector from "../tags/ColorSelector";
-import { colorClasses } from "../common/colors";
+import CreateTag from "../tags/CreateTag";
 
 const styles = theme => ({
   root: {
@@ -25,10 +21,6 @@ const styles = theme => ({
     overflow: "hidden",
     position: "relative",
     display: "flex"
-  },
-  divider: {
-    marginTop: theme.spacing.unit * 2,
-    marginBottom: theme.spacing.unit * 2
   },
   toolbar: {
     display: "flex",
@@ -43,15 +35,7 @@ const styles = theme => ({
     padding: theme.spacing.unit * 3,
     overflowY: "scroll"
   },
-  contentBody: {},
-  textUnderlined: {
-    textDecorationLine: "underline"
-  },
-  textBold: {
-    fontWeight: "bold"
-  },
-  ...colorClasses("Light", 100, "backgroundColor"),
-  ...colorClasses("", 700, "color")
+  contentBody: {}
 });
 
 class Navigation extends React.Component {
@@ -86,111 +70,39 @@ class Navigation extends React.Component {
     this.props.triggerSnack(newSnack);
   };
 
-  onChange = (field, val) => {
-    this.setState({ [field]: val });
-  };
-
-  handleSwitch = name => event => {
-    this.setState({ [name]: event.target.checked });
-  };
-
   render() {
-    const { classes } = this.props;
-
-    const textHightlightClasses = classNames(
-      classes[this.state.colBackground + "Light"],
-      classes[this.state.colFont],
-      this.state.underlined && classes.textUnderlined,
-      this.state.bold && classes.textBold
-    );
+    const { classes, match } = this.props;
 
     return (
-      <div className={classes.root}>
-        <NavBar
-          open={this.state.open}
-          handleDrawerOpen={this.handleDrawerOpen}
-        />
-        <NavDrawer
-          open={this.state.open}
-          handleDrawerClose={this.handleDrawerClose}
-        />
-        <main className={classes.content}>
-          <div className={classes.toolbar} />
-          <div className={classes.contentBody}>
-            <Typography variant="display3" gutterBottom>
-              Content
-            </Typography>
-            <Typography variant="subheading" gutterBottom>
-              Text Color
-            </Typography>
-            <ColorSelector
-              name="colFont"
-              value={this.state.colFont}
-              onChange={this.onChange}
-              dark
-            />
-            <Divider className={classes.divider} />
-            <Typography variant="subheading" gutterBottom>
-              Background Color
-            </Typography>
-            <ColorSelector
-              name="colBackground"
-              value={this.state.colBackground}
-              onChange={this.onChange}
-              light
-            />
-            <Divider className={classes.divider} />
-            <Typography variant="subheading" gutterBottom>
-              Text Decoration
-            </Typography>
-            <FormControlLabel
-              control={
-                <Switch
-                  color="primary"
-                  checked={this.state.underlined}
-                  onChange={this.handleSwitch("underlined")}
-                  value="underlined"
-                />
-              }
-              label="Underlined"
-            />
-            <FormControlLabel
-              control={
-                <Switch
-                  color="primary"
-                  checked={this.state.bold}
-                  onChange={this.handleSwitch("bold")}
-                  value="bold"
-                />
-              }
-              label="Bold"
-            />
-            <Divider className={classes.divider} />
-            <Typography variant="subheading" gutterBottom>
-              Highlightning Preview
-            </Typography>
-
-            <div>
-              Lorem ipsum dolor sit amet, consectetur{" "}
-              <span className={textHightlightClasses}>adipiscing elit</span>.
-              Integer venenatis mi nec enim aliquet dignissim. Donec rutrum vel
-              est non placerat. Quisque at vehicula leo. Morbi sed lacus mattis
-              sapien tempus{" "}
-              <span className={textHightlightClasses}>finibus faucibus</span>{" "}
-              sit amet neque. Integer non quam id turpis molestie egestas. Sed
-              sodales vel quam et interdum. Aliquam tincidunt diam id justo
-              maximus finibus.
+      <Router>
+        <div className={classes.root}>
+          <NavBar
+            open={this.state.open}
+            handleDrawerOpen={this.handleDrawerOpen}
+          />
+          <NavDrawer
+            open={this.state.open}
+            handleDrawerClose={this.handleDrawerClose}
+          />
+          <main className={classes.content}>
+            <div className={classes.toolbar} />
+            <div className={classes.contentBody}>
+              <Route path={`${match.path}/create-tag`} component={CreateTag} />
+              <Button
+                onClick={() =>
+                  this.openSnack({
+                    type: "success",
+                    msg: "YEAH",
+                    duration: 1000
+                  })
+                }
+              >
+                Open success snackbar
+              </Button>
             </div>
-            {/* <Button
-            onClick={() =>
-              this.openSuccessSnack({ type: "success", msg: "YEAH" })
-            }
-          >
-            Open success snackbar
-          </Button> */}
-          </div>
-        </main>
-      </div>
+          </main>
+        </div>
+      </Router>
     );
   }
 }
