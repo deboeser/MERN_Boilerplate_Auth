@@ -12,7 +12,11 @@ const setLoading = () => {
   return { type: SET_AUTH_LOADING };
 };
 
-const registerUser = userData => dispatch => {
+const unsetLoading = () => {
+  return { type: UNSET_AUTH_LOADING };
+};
+
+const registerUser = (userData, callback) => dispatch => {
   dispatch(setLoading());
   axios
     .post("/api/auth/register", userData)
