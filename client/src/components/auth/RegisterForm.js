@@ -73,10 +73,10 @@ class RegisterForm extends Component {
       password2: this.state.password2
     };
 
-    this.props.registerUser(newUser, this.registrationSuccessful);
+    this.props.registerUser(newUser, this.registrationSuccess);
   };
 
-  registrationSuccessful = () => {
+  registrationSuccess = () => {
     this.props.triggerSnack({
       type: "success",
       msg: "Registration successful! You can now login."

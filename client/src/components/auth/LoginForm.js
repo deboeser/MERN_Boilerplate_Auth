@@ -10,6 +10,7 @@ import Typography from "@material-ui/core/Typography";
 
 import isEmpty from "../../validation/is-empty";
 import { loginUser } from "../../actions/authActions";
+import { triggerSnack } from "../../actions/snackActions";
 import LoadingButton from "../common/LoadingButton";
 import TextField from "@material-ui/core/TextField";
 
@@ -70,7 +71,16 @@ class LoginForm extends Component {
       password: this.state.password
     };
 
-    this.props.loginUser(loginData, this.props.closeDialog);
+    this.props.loginUser(loginData, this.loginSuccess);
+  };
+
+  loginSuccess = () => {
+    this.props.triggerSnack({
+      type: "success",
+      msg: "You are now logged in.",
+      duration: 2000
+    });
+    this.props.closeDialog();
   };
 
   render() {
@@ -129,7 +139,9 @@ class LoginForm extends Component {
 
 LoginForm.propTypes = {
   recomputeHeight: PropTypes.func.isRequired,
-  closeDialog: PropTypes.func.isRequired
+  closeDialog: PropTypes.func.isRequired,
+  loginUser: PropTypes.func.isRequired,
+  triggerSnack: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
@@ -138,7 +150,8 @@ const mapStateToProps = state => ({
 });
 
 const mapDispatchToProps = {
-  loginUser
+  loginUser,
+  triggerSnack
 };
 
 export default compose(
