@@ -12,6 +12,8 @@ import store from "./store";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 
+import AuthPage from "./components/auth/AuthPage";
+import Navigation from "./components/navbar/Navigation";
 
 import "./App.css";
 
@@ -49,6 +51,8 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <Router>
             <div className="App" id="app">
+              <Route exact path="/" component={Navigation} />
+              <Route exact path="/auth" component={AuthPage} />
             </div>
           </Router>
         </MuiThemeProvider>
