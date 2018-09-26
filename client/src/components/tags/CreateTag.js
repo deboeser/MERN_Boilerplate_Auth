@@ -24,6 +24,9 @@ const styles = theme => ({
   textBold: {
     fontWeight: "bold"
   },
+  textBigger: {
+    fontSize: "1.25rem"
+  },
   ...colorClasses("Light", 100, "backgroundColor"),
   ...colorClasses("", 700, "color")
 });
@@ -36,7 +39,8 @@ class CreateTag extends React.Component {
       colFont: "",
       colBackground: "",
       underlined: false,
-      bold: false
+      bold: false,
+      bigger: false
     };
   }
 
@@ -55,7 +59,8 @@ class CreateTag extends React.Component {
       classes[this.state.colBackground + "Light"],
       classes[this.state.colFont],
       this.state.underlined && classes.textUnderlined,
-      this.state.bold && classes.textBold
+      this.state.bold && classes.textBold,
+      this.state.bigger && classes.textBigger
     );
 
     return (
@@ -107,6 +112,17 @@ class CreateTag extends React.Component {
             />
           }
           label="Bold"
+        />
+        <FormControlLabel
+          control={
+            <Switch
+              color="primary"
+              checked={this.state.bigger}
+              onChange={this.handleSwitch("bigger")}
+              value="bigger"
+            />
+          }
+          label="Bigger"
         />
         <Divider className={classes.divider} />
         <Typography variant="subheading" gutterBottom>
