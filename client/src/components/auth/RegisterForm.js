@@ -126,7 +126,7 @@ class RegisterForm extends Component {
             >
               Register
             </LoadingButton>
-            <Button
+            {/* <Button
               onClick={() =>
                 this.props.triggerSnack({
                   type: "warning",
@@ -136,7 +136,7 @@ class RegisterForm extends Component {
               }
             >
               Open success snackbar
-            </Button>
+            </Button> */}
           </div>
         </form>
       </div>
