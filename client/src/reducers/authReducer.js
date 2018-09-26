@@ -1,7 +1,8 @@
 import {
   GET_ERRORS,
   SET_AUTH_LOADING,
-  SET_CURRENT_USER
+  SET_CURRENT_USER,
+  UNSET_AUTH_LOADING
 } from "../actions/types";
 import isEmpty from "../validation/is-empty";
 
@@ -17,6 +18,11 @@ export default function(state = initialState, action) {
       return {
         ...state,
         loading: true
+      };
+    case UNSET_AUTH_LOADING:
+      return {
+        ...state,
+        loading: false
       };
     case SET_CURRENT_USER:
       return {
