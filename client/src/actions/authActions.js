@@ -55,7 +55,6 @@ const loginUser = (userData, callback) => dispatch => {
       callback();
     })
     .catch(err => {
-      console.log(err);
       dispatch({
         type: GET_ERRORS,
         payload: err.response.data
