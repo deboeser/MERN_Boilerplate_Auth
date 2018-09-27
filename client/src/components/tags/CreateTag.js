@@ -1,14 +1,18 @@
 import React from "react";
 import { withStyles } from "@material-ui/core/styles";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { compose } from "redux";
 import classNames from "classnames";
 
 import Typography from "@material-ui/core/Typography";
 import Switch from "@material-ui/core/Switch";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
 import Divider from "@material-ui/core/Divider";
+import TextField from "@material-ui/core/TextField";
 
-import { colorClasses } from "../common/colors";
 import ColorSelector from "../tags/ColorSelector";
+import standardTagConfiguration from "../common/standardTagConfiguration";
 
 const styles = theme => ({
   root: {
@@ -18,17 +22,7 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2
   },
-  textUnderlined: {
-    textDecorationLine: "underline"
-  },
-  textBold: {
-    fontWeight: "bold"
-  },
-  textBigger: {
-    fontSize: "1.25rem"
-  },
-  ...colorClasses("Light", 100, "backgroundColor"),
-  ...colorClasses("", 700, "color")
+  ...standardTagConfiguration(theme)
 });
 
 class CreateTag extends React.Component {
@@ -36,16 +30,25 @@ class CreateTag extends React.Component {
     super(props);
 
     this.state = {
-      colFont: "",
-      colBackground: "",
+      color: "",
+      background: "",
       underlined: false,
       bold: false,
-      bigger: false
+      bigger: false,
+      tagname: ""
     };
+  }
+
+  componentDidMount() {
+    this.props.exportSelf(this);
   }
 
   onChange = (field, val) => {
     this.setState({ [field]: val });
+  };
+
+  onTextChange = e => {
+    this.setState({ [e.target.name]: e.target.value });
   };
 
   handleSwitch = name => event => {
@@ -56,8 +59,8 @@ class CreateTag extends React.Component {
     const { classes } = this.props;
 
     const textHightlightClasses = classNames(
-      classes[this.state.colBackground + "Light"],
-      classes[this.state.colFont],
+      classes[this.state.background + "Light"],
+      classes[this.state.color],
       this.state.underlined && classes.textUnderlined,
       this.state.bold && classes.textBold,
       this.state.bigger && classes.textBigger
@@ -65,15 +68,19 @@ class CreateTag extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Typography variant="display1" gutterBottom>
-          Content
-        </Typography>
+        <TextField
+          name="tagname"
+          onChange={this.onTextChange}
+          label="Color Tag Name"
+          fullWidth
+        />
+        <Divider className={classes.divider} />
         <Typography variant="subheading" gutterBottom>
           Text Color
         </Typography>
         <ColorSelector
-          name="colFont"
-          value={this.state.colFont}
+          name="color"
+          value={this.state.color}
           onChange={this.onChange}
           dark
         />
@@ -82,8 +89,8 @@ class CreateTag extends React.Component {
           Background Color
         </Typography>
         <ColorSelector
-          name="colBackground"
-          value={this.state.colBackground}
+          name="background"
+          value={this.state.background}
           onChange={this.onChange}
           light
         />
@@ -129,7 +136,7 @@ class CreateTag extends React.Component {
           Highlightning Preview
         </Typography>
 
-        <div>
+        <Typography>
           Lorem ipsum dolor sit amet, consectetur{" "}
           <span className={textHightlightClasses}>adipiscing elit</span>.
           Integer venenatis mi nec enim aliquet dignissim. Donec rutrum vel est
@@ -138,10 +145,27 @@ class CreateTag extends React.Component {
           sit amet neque. Integer non quam id turpis molestie egestas. Sed
           sodales vel quam et interdum. Aliquam tincidunt diam id justo maximus
           finibus.
-        </div>
+        </Typography>
       </div>
     );
   }
 }
 
-export default withStyles(styles)(CreateTag);
+CreateTag.propTypes = {
+  tag: PropTypes.object.isRequired,
+  exportSelf: PropTypes.func.isRequired
+};
+
+const mapStateToProps = state => ({
+  tag: state.tags.tag
+});
+
+const mapDispatchToProps = {};
+
+export default compose(
+  withStyles(styles),
+  connect(
+    mapStateToProps,
+    null
+  )
+)(CreateTag);
