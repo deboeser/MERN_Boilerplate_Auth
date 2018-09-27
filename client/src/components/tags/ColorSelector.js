@@ -3,7 +3,7 @@ import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 
 import { colors, colorsReduced } from "../common/colors";
-import ColorTag from "./ColorTag";
+import ColorButton from "./ColorButton";
 
 const styles = theme => {};
 
@@ -40,7 +40,7 @@ class ColorSelector extends Component {
     const { value } = this.state;
     const { reduced } = this.props;
 
-    let colorTags;
+    let ColorButtons;
     let colorArray;
 
     if (reduced) {
@@ -49,8 +49,8 @@ class ColorSelector extends Component {
       colorArray = colors;
     }
 
-    colorTags = colorArray.map((color, index) => (
-      <ColorTag
+    ColorButtons = colorArray.map((color, index) => (
+      <ColorButton
         value={value}
         color={color}
         key={index}
@@ -59,7 +59,7 @@ class ColorSelector extends Component {
       />
     ));
 
-    return <div>{colorTags}</div>;
+    return <div>{ColorButtons}</div>;
   }
 }
 

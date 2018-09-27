@@ -17,12 +17,12 @@ import ReportIcon from "@material-ui/icons/Report";
 
 export const mailFolderListItems = (
   <div>
-    <Link to="/auth">
+    <Link to="/app/color-tags">
       <ListItem button>
         <ListItemIcon>
           <FontAwesomeIcon icon={faTags} />
         </ListItemIcon>
-        <ListItemText primary="New Query" />
+        <ListItemText primary="My Color Tags" />
       </ListItem>
     </Link>
     <ListItem button>

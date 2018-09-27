@@ -12,6 +12,7 @@ import { triggerSnack } from "../../actions/snackActions";
 import NavBar from "./NavBar";
 import NavDrawer from "./NavDrawer";
 import CreateTag from "../tags/CreateTag";
+import ColorTags from "../tags/ColorTags";
 
 const styles = theme => ({
   root: {
@@ -88,7 +89,7 @@ class Navigation extends React.Component {
             <div className={classes.toolbar} />
             <div className={classes.contentBody}>
               <Route path={`${match.path}/create-tag`} component={CreateTag} />
-              <Button
+              <Route path={`${match.path}/color-tags`} component={ColorTags} />
             </div>
           </main>
         </div>

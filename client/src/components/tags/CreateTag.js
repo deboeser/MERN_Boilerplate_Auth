@@ -65,7 +65,7 @@ class CreateTag extends React.Component {
 
     return (
       <div className={classes.root}>
-        <Typography variant="display2" gutterBottom>
+        <Typography variant="display1" gutterBottom>
           Content
         </Typography>
         <Typography variant="subheading" gutterBottom>
