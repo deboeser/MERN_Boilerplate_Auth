@@ -89,16 +89,6 @@ class Navigation extends React.Component {
             <div className={classes.contentBody}>
               <Route path={`${match.path}/create-tag`} component={CreateTag} />
               <Button
-                onClick={() =>
-                  this.openSnack({
-                    type: "success",
-                    msg: "YEAH",
-                    duration: 1000
-                  })
-                }
-              >
-                Open success snackbar
-              </Button>
             </div>
           </main>
         </div>
