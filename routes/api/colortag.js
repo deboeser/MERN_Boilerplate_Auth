@@ -142,4 +142,21 @@ router.post(
   }
 );
 
+/**
+ * @route   DELETE api/colortag/id/:id
+ * @desc    Delete colortag by id
+ * @access  private
+ */
+router.delete(
+  "/id/:id",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    Colortag.findOneAndRemove({ _id: req.params.id })
+      .then(() => {
+        res.json({ success: true });
+      })
+      .catch(err => res.status(404).json(err));
+  }
+);
+
 module.exports = router;
