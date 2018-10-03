@@ -40,7 +40,7 @@ const random = {
 
 const theme = createMuiTheme({
   palette: {
-    primary: random,
+    primary: blue,
     secondary: blue
   }
 });

@@ -100,6 +100,7 @@ class CreateTag extends React.Component {
     const { classes } = this.props;
     const { errors } = this.state;
     let placeholder;
+    const errorPhrases = !isEmpty(errors.phrases);
 
     const textHightlightClasses = classNames(
       classes[this.state.background + "Light"],
@@ -133,10 +134,11 @@ class CreateTag extends React.Component {
           value={this.state.phrases}
           onAdd={chip => this.handleAddChip(chip)}
           onDelete={(chip, index) => this.handleDeleteChip(chip, index)}
-          InputProps={{ ...placeholder, error: !isEmpty(errors.phrases) }}
+          InputProps={{ ...placeholder, error: errorPhrases }}
           helperText={errors.phrases}
-          FormHelperTextProps={{ error: !isEmpty(errors.phrases) }}
-          InputLabelProps={{ error: !isEmpty(errors.phrases) }}
+          FormHelperTextProps={{ error: errorPhrases }}
+          InputLabelProps={{ error: errorPhrases }}
+          error={errorPhrases}
         />
         <Divider className={classes.divider} />
         <Typography variant="subheading" gutterBottom>
