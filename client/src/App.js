@@ -12,7 +12,7 @@ import store from "./store";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 
-import AuthPage from "./components/auth/AuthPage";
+import Dashboard from "./components/dashboard/Dashboard";
 import Navigation from "./components/navbar/Navigation";
 import Snack from "./components/common/Snack";
 
@@ -54,7 +54,7 @@ class App extends Component {
           <Router>
             <div className="App" id="app">
               <Route path="/app" component={Navigation} />
-              <Route exact path="/auth" component={AuthPage} />
+              <Route path="/dashboard" component={Dashboard} />
             </div>
           </Router>
           <Snack />

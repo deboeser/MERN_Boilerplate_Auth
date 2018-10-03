@@ -1,5 +1,7 @@
 import React from "react";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { compose } from "redux";
 import classNames from "classnames";
 import { withStyles } from "@material-ui/core/styles";
 
@@ -69,7 +71,7 @@ const NavDrawer = props => {
         </IconButton>
       </div>
       <Divider />
-      <List>{mailFolderListItems}</List>
+      <List>{mailFolderListItems(props.auth.isAuthenticated)}</List>
       <Divider />
       <List>{otherMailFolderListItems}</List>
       <Divider />
@@ -82,4 +84,14 @@ NavDrawer.propTypes = {
   handleDrawerClose: PropTypes.func.isRequired
 };
 
-export default withStyles(styles, { withTheme: true })(NavDrawer);
+const mapStateToProps = state => ({
+  auth: state.auth
+});
+
+export default compose(
+  withStyles(styles, { withTheme: true }),
+  connect(
+    mapStateToProps,
+    null
+  )
+)(NavDrawer);

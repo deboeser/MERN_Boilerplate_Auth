@@ -14,37 +14,56 @@ import SendIcon from "@material-ui/icons/Send";
 import MailIcon from "@material-ui/icons/Mail";
 import DeleteIcon from "@material-ui/icons/Delete";
 import ReportIcon from "@material-ui/icons/Report";
+import HomeIcon from "@material-ui/icons/Home";
 
-export const mailFolderListItems = (
-  <div>
-    <Link to="/app/color-tags">
+export const mailFolderListItems = auth => {
+  let colorTags;
+
+  if (auth) {
+    colorTags = (
+      <Link to="/app/color-tags">
+        <ListItem button>
+          <ListItemIcon>
+            <FontAwesomeIcon icon={faTags} />
+          </ListItemIcon>
+          <ListItemText primary="Color Tags" />
+        </ListItem>
+      </Link>
+    );
+  }
+
+  return (
+    <div>
+      <Link to="/app/dashboard">
+        <ListItem button>
+          <ListItemIcon>
+            <HomeIcon />
+          </ListItemIcon>
+          <ListItemText primary="Dashboard" />
+        </ListItem>
+      </Link>
+      {colorTags}
       <ListItem button>
         <ListItemIcon>
-          <FontAwesomeIcon icon={faTags} />
+          <StarIcon />
         </ListItemIcon>
-        <ListItemText primary="My Color Tags" />
+        <ListItemText primary="Starred" />
       </ListItem>
-    </Link>
-    <ListItem button>
-      <ListItemIcon>
-        <StarIcon />
-      </ListItemIcon>
-      <ListItemText primary="Starred" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <SendIcon />
-      </ListItemIcon>
-      <ListItemText primary="Send mail" />
-    </ListItem>
-    <ListItem button>
-      <ListItemIcon>
-        <DraftsIcon />
-      </ListItemIcon>
-      <ListItemText primary="Drafts" />
-    </ListItem>
-  </div>
-);
+      <ListItem button>
+        <ListItemIcon>
+          <SendIcon />
+        </ListItemIcon>
+        <ListItemText primary="Send mail" />
+      </ListItem>
+      <ListItem button>
+        <ListItemIcon>
+          <DraftsIcon />
+        </ListItemIcon>
+        <ListItemText primary="Drafts" />
+      </ListItem>
+    </div>
+  );
+};
 
 export const otherMailFolderListItems = (
   <div>
