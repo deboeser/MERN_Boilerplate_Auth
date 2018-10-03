@@ -33,7 +33,9 @@ const styles = theme => ({
     marginTop: theme.spacing.unit * 2,
     marginBottom: theme.spacing.unit * 2
   },
-  example: {},
+  preview: {
+    backgroundColor: "#F2F2F2"
+  },
   media: {
     height: 140
   },
@@ -85,16 +87,18 @@ class ColorTag extends Component {
       <Grid item xs={12} sm={6} md={4} lg={3}>
         <Card className={classes.card}>
           <CardContent>
-            <Typography gutterBottom variant="headline" component="h2">
+            <Typography variant="headline" component="h2">
               {tag.tagname}
             </Typography>
+          </CardContent>
+          <CardContent className={classes.preview}>
             <Typography className={classes.exampleWrapper}>
               This is an <span className={textHightlightClasses}>example</span>{" "}
               text that shows how this color text looks like in a plain text{" "}
               <span className={textHightlightClasses}>example</span>.
             </Typography>
-            {phraseChips}
           </CardContent>
+          <CardContent>{phraseChips}</CardContent>
           <CardActions className={classes.cardAction}>
             <Button size="small" color="primary" onClick={this.onDeleteClick}>
               Delete

@@ -14,6 +14,7 @@ import LinearProgress from "@material-ui/core/LinearProgress";
 
 import ColorTag from "./ColorTag";
 import CreateTagDialog from "./CreateTagDialog";
+import PageActionHeadline from "../common/PageActionHeadline";
 import { colorClasses } from "../common/colors";
 
 const styles = theme => ({
@@ -85,10 +86,11 @@ class ColorTags extends Component {
 
     return (
       <div>
-        <Typography variant="display1" gutterBottom>
-          Your Color Tags
-        </Typography>
-        <Button onClick={this.handleClickOpen}>New Tag</Button>
+        <PageActionHeadline
+          headline="Color Tags"
+          buttonText="Add Tag"
+          buttonAction={this.handleClickOpen}
+        />
         <CreateTagDialog
           state={this.state.dialogOpen}
           handleClose={this.handleClose}
