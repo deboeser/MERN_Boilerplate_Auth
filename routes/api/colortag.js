@@ -34,7 +34,7 @@ router.get(
 );
 
 /**
- * @route   POST api/colortag/:id
+ * @route   POST api/colortag/id/:id
  * @desc    Get all colortags of the current user
  * @access  private
  */
@@ -106,9 +106,9 @@ router.post(
     newColortag.tagname = req.body.tagname;
     newColortag.color = req.body.color;
     newColortag.background = req.body.background;
-    newColortag.underlined = req.body.underlined === "True";
-    newColortag.bold = req.body.bold === "True";
-    newColortag.bigger = req.body.bigger === "True";
+    newColortag.underlined = req.body.underlined;
+    newColortag.bold = req.body.bold;
+    newColortag.bigger = req.body.bigger;
 
     if (typeof req.body.phrases !== "undefined") {
       newColortag.phrases = req.body.phrases.split(",");
