@@ -34,7 +34,7 @@ const styles = theme => ({
     marginBottom: theme.spacing.unit * 2
   },
   preview: {
-    backgroundColor: "#F2F2F2"
+    backgroundColor: theme.palette.grey[100]
   },
   media: {
     height: 140
