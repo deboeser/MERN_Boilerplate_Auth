@@ -19,7 +19,7 @@ const styles = theme => ({
     margin: theme.spacing.unit * 1,
     borderRadius: theme.spacing.unit * 1.5,
     border: "2px solid #000",
-    transition: "all 0.2s ease 0s"
+    transition: "all 0.1s ease 0s"
   },
   tag: {
     position: "absolute",
@@ -27,7 +27,7 @@ const styles = theme => ({
     height: theme.spacing.unit * 4,
     borderRadius: theme.spacing.unit * 2,
     margin: theme.spacing.unit * 0.5,
-    transition: "all 0.1s ease 0s"
+    transition: "all 0.2s ease 0s"
   },
   selectedNew: {
     width: theme.spacing.unit * 5 - 4,
