@@ -1,4 +1,5 @@
 import {
+  SET_TAG,
   SET_TAGS,
   SET_TAGS_LOADING,
   UNSET_TAGS_LOADING
@@ -12,6 +13,11 @@ const initialState = {
 
 const errorReducer = (state = initialState, action) => {
   switch (action.type) {
+    case SET_TAG:
+      return {
+        ...state,
+        tag: action.payload
+      };
     case SET_TAGS:
       return {
         ...state,
