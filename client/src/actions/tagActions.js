@@ -11,6 +11,7 @@ const setLoading = () => {
   return { type: SET_TAGS_LOADING };
 };
 
+// eslint-disable-next-line
 const unsetLoading = () => {
   return { type: UNSET_TAGS_LOADING };
 };

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
+import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Provider } from "react-redux";
 
 import MuiThemeProvider from "@material-ui/core/styles/MuiThemeProvider";
@@ -34,6 +34,7 @@ if (localStorage.jwtToken) {
 }
 
 // A custom-defined color must have a 500 property
+// eslint-disable-next-line
 const random = {
   500: "#6A65F1"
 };

@@ -47,10 +47,6 @@ const styles = theme => ({
 });
 
 class ColorTag extends Component {
-  constructor(props) {
-    super(props);
-  }
-
   onDeleteClick = () => {
     this.props.deleteTag(this.props.id, () => {
       this.props.loadUserTags();
@@ -68,7 +64,7 @@ class ColorTag extends Component {
   };
 
   render() {
-    const { classes, tag, id } = this.props;
+    const { classes, tag } = this.props;
 
     const textHightlightClasses = classNames(
       classes.example,

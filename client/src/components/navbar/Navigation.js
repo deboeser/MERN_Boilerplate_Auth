@@ -8,7 +8,6 @@ import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import { triggerSnack } from "../../actions/snackActions";
 import NavBar from "./NavBar";
 import NavDrawer from "./NavDrawer";
-import CreateTag from "../tags/CreateTag";
 import ColorTags from "../tags/ColorTags";
 import Dashboard from "../dashboard/Dashboard";
 import PrivateRoute from "../common/PrivateRoute";
@@ -87,7 +86,6 @@ class Navigation extends React.Component {
           <main className={classes.content}>
             <div className={classes.toolbar} />
             <div className={classes.contentBody}>
-              {/* <Route path={`${match.path}/color-tags`} component={ColorTags} /> */}
               <Route path={`${match.path}/dashboard`} component={Dashboard} />
               <Switch>
                 <PrivateRoute

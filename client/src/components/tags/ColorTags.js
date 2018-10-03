@@ -9,13 +9,11 @@ import { loadUserTags, setTag } from "../../actions/tagActions";
 
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
 import LinearProgress from "@material-ui/core/LinearProgress";
 
 import ColorTag from "./ColorTag";
 import CreateTagDialog from "./CreateTagDialog";
 import PageActionHeadline from "../common/PageActionHeadline";
-import { colorClasses } from "../common/colors";
 
 const styles = theme => ({
   grid: {
