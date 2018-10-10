@@ -6,6 +6,7 @@ import { withStyles } from "@material-ui/core/styles";
 import PropTypes from "prop-types";
 
 import { loadUserTags, setTag } from "../../actions/tagActions";
+import isEmpty from "../../validation/is-empty";
 
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
@@ -27,14 +28,19 @@ class ColorTags extends Component {
 
     this.state = {
       dialogOpen: false,
-      loading: true,
+      loading: false,
       tags: []
     };
   }
 
   componentDidMount() {
-    this.props.loadUserTags();
-    this.setState({ tags: this.props.tags.tags });
+    if (isEmpty(this.props.tags.tags)) {
+      this.props.loadUserTags();
+    }
+    this.setState({
+      tags: this.props.tags.tags,
+      loading: this.props.tags.loading
+    });
   }
 
   componentWillReceiveProps(nextProps) {
