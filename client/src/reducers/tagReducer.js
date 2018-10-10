@@ -8,6 +8,7 @@ import {
 const initialState = {
   loading: false,
   tags: [],
+  appliedTags: [],
   tag: {}
 };
 
@@ -22,7 +23,8 @@ const errorReducer = (state = initialState, action) => {
       return {
         ...state,
         loading: false,
-        tags: action.payload
+        tags: action.payload.tags,
+        appliedTags: action.payload.appliedTags
       };
     case SET_TAGS_LOADING:
       return {

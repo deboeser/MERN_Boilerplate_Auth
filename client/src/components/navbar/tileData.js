@@ -18,6 +18,7 @@ import HomeIcon from "@material-ui/icons/Home";
 
 export const mailFolderListItems = auth => {
   let colorTags;
+  let singleAbstract;
 
   if (auth) {
     colorTags = (
@@ -27,6 +28,16 @@ export const mailFolderListItems = auth => {
             <FontAwesomeIcon icon={faTags} />
           </ListItemIcon>
           <ListItemText primary="Color Tags" />
+        </ListItem>
+      </Link>
+    );
+    singleAbstract = (
+      <Link to="/app/single-abstract">
+        <ListItem button>
+          <ListItemIcon>
+            <StarIcon />
+          </ListItemIcon>
+          <ListItemText primary="Single Abstract" />
         </ListItem>
       </Link>
     );
@@ -43,12 +54,7 @@ export const mailFolderListItems = auth => {
         </ListItem>
       </Link>
       {colorTags}
-      <ListItem button>
-        <ListItemIcon>
-          <StarIcon />
-        </ListItemIcon>
-        <ListItemText primary="Starred" />
-      </ListItem>
+      {singleAbstract}
       <ListItem button>
         <ListItemIcon>
           <SendIcon />

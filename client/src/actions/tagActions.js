@@ -6,6 +6,7 @@ import {
   SET_TAGS_LOADING,
   UNSET_TAGS_LOADING
 } from "./types";
+import isEmpty from "../validation/is-empty";
 
 const setLoading = () => {
   return { type: SET_TAGS_LOADING };
@@ -21,9 +22,25 @@ const loadUserTags = () => dispatch => {
   axios
     .get("/api/colortag/current/")
     .then(res => {
+      let appliedTags = res.data.map(tag => {
+        let tagClasses = [];
+        !isEmpty(tag.color) && tagClasses.push(tag.color);
+        !isEmpty(tag.background) && tagClasses.push(tag.background + "Light");
+        tag.underlined && tagClasses.push("textUnderlined");
+        tag.bold && tagClasses.push("textBold");
+        tag.bigger && tagClasses.push("textBigger");
+        return {
+          phrases: tag.phrases,
+          classes: tagClasses
+        };
+      });
+      const payload = {
+        tags: res.data,
+        appliedTags: appliedTags
+      };
       dispatch({
         type: SET_TAGS,
-        payload: res.data
+        payload: payload
       });
     })
     .catch(err => {
