@@ -55,7 +55,6 @@ class App extends Component {
           <Router>
             <div className="App" id="app">
               <Route path="/app" component={Navigation} />
-              <Route path="/dashboard" component={Dashboard} />
             </div>
           </Router>
           <Snack />
