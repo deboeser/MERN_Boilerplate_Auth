@@ -12,6 +12,8 @@ import Paper from "@material-ui/core/Paper";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 
+import { applyTags } from "./applyTags";
+
 import PageActionHeadline from "../common/PageActionHeadline";
 import isEmpty from "../../validation/is-empty";
 import standardTagConfiguration from "../common/standardTagConfiguration";
@@ -53,57 +55,9 @@ class SingleAbstract extends Component {
   };
 
   onTransferClick = text => {
-    let textChars = text.split("");
-    textChars = textChars.map(item => {
-      return {
-        char: item,
-        classes: []
-      };
-    });
-
-    this.props.tags.appliedTags.forEach(tag => {
-      let tmpResult = new Array();
-      tag.phrases.forEach(phrase => {
-        let regEx = new RegExp(phrase, "gi");
-        while (regEx.exec(text)) {
-          tmpResult.push([regEx.lastIndex - phrase.length, regEx.lastIndex]);
-        }
-      });
-      tmpResult.forEach(finding => {
-        for (var i = finding[0]; i < finding[1]; i++) {
-          textChars[i].classes.push(...tag.classes);
-        }
-      });
-    });
-
-    textChars = textChars.map(item => {
-      return {
-        char: item.char,
-        classes: item.classes.join(" ")
-      };
-    });
-
-    let result = [];
-    let classes = textChars[0].classes;
-    let start = 0;
-
-    for (var i = 0; i < textChars.length; i++) {
-      if (!(classes == textChars[i].classes)) {
-        result.push({
-          text: text.substring(start, i),
-          classes: classes
-        });
-        start = i;
-        classes = textChars[i].classes;
-      }
-    }
-
-    result.push({
-      text: text.substring(start, textChars.length),
-      classes: classes
-    });
-
-    this.setState({ textSplit: result });
+    applyTags(text, this.props.tags.appliedTags)
+      .then(res => this.setState({ textSplit: res }))
+      .catch(err => console.log("TODO: Handle error: ", err));
   };
 
   render() {
