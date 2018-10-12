@@ -11,6 +11,7 @@ import NavDrawer from "./NavDrawer";
 import ColorTags from "../tags/ColorTags";
 import Dashboard from "../dashboard/Dashboard";
 import SingleAbstract from "../query/SingleAbstract";
+import SearchQuery from "../query/SearchQuery";
 import PrivateRoute from "../common/PrivateRoute";
 
 const styles = theme => ({
@@ -98,6 +99,12 @@ class Navigation extends React.Component {
                 <PrivateRoute
                   path={`${match.path}/single-abstract`}
                   component={SingleAbstract}
+                />
+              </Switch>
+              <Switch>
+                <PrivateRoute
+                  path={`${match.path}/search-query`}
+                  component={SearchQuery}
                 />
               </Switch>
             </div>

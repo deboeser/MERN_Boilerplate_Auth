@@ -19,6 +19,7 @@ import HomeIcon from "@material-ui/icons/Home";
 export const mailFolderListItems = auth => {
   let colorTags;
   let singleAbstract;
+  let searchQuery;
 
   if (auth) {
     colorTags = (
@@ -41,6 +42,16 @@ export const mailFolderListItems = auth => {
         </ListItem>
       </Link>
     );
+    searchQuery = (
+      <Link to="/app/search-query">
+        <ListItem button>
+          <ListItemIcon>
+            <SendIcon />
+          </ListItemIcon>
+          <ListItemText primary="Search Query" />
+        </ListItem>
+      </Link>
+    );
   }
 
   return (
@@ -55,12 +66,7 @@ export const mailFolderListItems = auth => {
       </Link>
       {colorTags}
       {singleAbstract}
-      <ListItem button>
-        <ListItemIcon>
-          <SendIcon />
-        </ListItemIcon>
-        <ListItemText primary="Send mail" />
-      </ListItem>
+      {searchQuery}
       <ListItem button>
         <ListItemIcon>
           <DraftsIcon />
