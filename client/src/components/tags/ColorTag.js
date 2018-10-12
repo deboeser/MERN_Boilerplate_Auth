@@ -47,6 +47,14 @@ const styles = theme => ({
 });
 
 class ColorTag extends Component {
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      showAll: false
+    };
+  }
+
   onDeleteClick = () => {
     this.props.deleteTag(this.props.id, () => {
       this.props.loadUserTags();
@@ -63,6 +71,10 @@ class ColorTag extends Component {
     this.props.handleClickOpen();
   };
 
+  toggleShowAll = () => {
+    this.setState({ showAll: !this.state.showAll });
+  };
+
   render() {
     const { classes, tag } = this.props;
 
@@ -75,9 +87,35 @@ class ColorTag extends Component {
       tag.bigger && classes.textBigger
     );
 
-    const phraseChips = tag.phrases.map((phrase, key) => (
-      <Chip label={phrase} key={key} className={classes.chip} />
-    ));
+    let phraseChips;
+
+    if (tag.phrases.length > 10 && !this.state.showAll) {
+      const phrasesReduced = [...tag.phrases].splice(0, 10);
+      phraseChips = phrasesReduced.map((phrase, key) => (
+        <Chip label={phrase} key={key} className={classes.chip} />
+      ));
+      phraseChips.push(
+        <Chip label={"..."} key="more" className={classes.chip} />
+      );
+      phraseChips.push(
+        <Button size="small" key="button" onClick={this.toggleShowAll}>
+          Show all
+        </Button>
+      );
+    } else if (tag.phrases.length > 10 && this.state.showAll) {
+      phraseChips = tag.phrases.map((phrase, key) => (
+        <Chip label={phrase} key={key} className={classes.chip} />
+      ));
+      phraseChips.push(
+        <Button size="small" key="button" onClick={this.toggleShowAll}>
+          Show less
+        </Button>
+      );
+    } else {
+      phraseChips = tag.phrases.map((phrase, key) => (
+        <Chip label={phrase} key={key} className={classes.chip} />
+      ));
+    }
 
     return (
       <Grid item xs={12} sm={6} md={4} lg={3}>
