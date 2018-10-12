@@ -67,7 +67,8 @@ class SingleAbstract extends Component {
       abstract: "",
       abstractLoading: false,
       manualAbstractSplit: [],
-      retrievedAbstractSplit: []
+      retrievedAbstractSplit: [],
+      errors: {}
     };
   }
 
@@ -99,13 +100,14 @@ class SingleAbstract extends Component {
         .then(res => {
           this.setState({
             hyperlinkLoading: false,
-            hyperlink: res.data.link
+            hyperlink: res.data.url
           });
         })
         .catch(err => {
           this.setState({
             hyperlinkLoading: false,
-            hyperlink: "Link could not be retrieved"
+            hyperlink: err.response.data.error.text,
+            errors: err.response.data.error
           });
         });
     }
@@ -122,17 +124,24 @@ class SingleAbstract extends Component {
           this.setState({
             abstractLoading: false,
             hyperlinkLoading: false,
-            hyperlink: res.data.link,
-            abstract: res.data.abstract
+            hyperlink: res.data.url,
+            abstract: res.data.abstract.text
           });
-          this.onTransferClick("retrievedAbstractSplit", res.data.abstract);
+          this.onTransferClick(
+            "retrievedAbstractSplit",
+            res.data.abstract.text
+          );
         })
         .catch(err => {
+          const { error } = err.response.data;
           this.setState({
             abstractLoading: false,
             hyperlinkLoading: false,
-            abstract: "Abstract could not be found"
+            abstract: error.abstract ? error.text : "-",
+            hyperlink: error.url ? error.text : err.response.data.url,
+            errors: error
           });
+          this.onTransferClick("retrievedAbstractSplit", this.state.abstract);
         });
     }
   };
@@ -189,7 +198,6 @@ class SingleAbstract extends Component {
             );
           }
         );
-        console.log(retrievedAbstract);
       }
       abstract = <Typography>{retrievedAbstract}</Typography>;
     } else {

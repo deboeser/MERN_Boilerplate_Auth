@@ -10,14 +10,12 @@ const isEmpty = require("../../validation/is-empty");
  * @access  public
  */
 router.get("/doitourl/:doi(*)", (req, res) => {
-  const errors = {};
   getLinkFromDOI(req.params.doi)
-    .then(link => {
-      return res.json({ link: link });
+    .then(obj => {
+      return res.json({ ...obj });
     })
     .catch(err => {
-      errors.nolink = "No link available";
-      return res.status(404).json(errors);
+      return res.status(404).json(err);
     });
 });
 
@@ -29,29 +27,30 @@ router.get("/doitourl/:doi(*)", (req, res) => {
 router.get("/doitoabstract/:doi(*)", (req, res) => {
   const errors = {};
   getLinkFromDOI(req.params.doi)
-    .then(link => {
-      getAbstract(link)
+    .then(obj => {
+      getAbstract(obj.url)
         .then(arr => {
           if (arr.length == 0) {
-            errors.noabstract = "No abstract available";
-            return res.status(404).json(errors);
+            obj.error.text = "No abstract found on website";
+            obj.error.abstract = true;
+            return res.status(404).json(obj);
           } else {
-            return res.json({
-              link: link,
-              count: arr.length,
-              results: arr,
-              abstract: arr.join("\n")
-            });
+            obj.abstract = {
+              resultcount: arr.length,
+              text: arr.join(" | "),
+              details: arr
+            };
+            return res.json(obj);
           }
         })
         .catch(err => {
-          errors.retreivalerror = "Errors occured while retreiving abstract";
-          return res.status(400).json(errors);
+          obj.error.text = "Errors occured while extracting abstract";
+          obj.error.abstract = true;
+          return res.status(400).json(obj);
         });
     })
-    .catch(err => {
-      errors.nolink = "No source for abstract found";
-      return res.status(404).json(errors);
+    .catch(obj => {
+      return res.status(404).json(obj);
     });
 });
 
