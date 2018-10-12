@@ -1,4 +1,4 @@
-import isEmpty from "../../validation/is-empty";
+import isEmpty from "../validation/is-empty";
 
 const applyTags = (text, appliedTags) => {
   return new Promise((resolve, reject) => {
@@ -40,7 +40,7 @@ const applyTags = (text, appliedTags) => {
     let start = 0;
 
     for (var i = 0; i < charArray.length; i++) {
-      if (!(classes == charArray[i].classes)) {
+      if (!(classes === charArray[i].classes)) {
         result.push({
           text: text.substring(start, i),
           classes: classes
