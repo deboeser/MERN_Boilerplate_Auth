@@ -10,6 +10,7 @@ const passport = require("passport");
 const {
   validateLoginInput,
   validateRegisterInput,
+  validateChangePasswordInput
 } = require("../../validation/auth");
 
 /**
@@ -115,6 +116,50 @@ router.get(
     res.json({
       id: req.user.id,
       email: req.user.email
+    });
+  }
+);
+
+/**
+ * @route   POST api/auth/change-password
+ * @desc    Changes the password of the user
+ * @access  private
+ */
+router.post(
+  "/change-password",
+  passport.authenticate("jwt", { session: false }),
+  (req, res) => {
+    const { errors, isValid } = validateChangePasswordInput(req.body);
+
+    if (!isValid) {
+      return res.status(400).json(errors);
+    }
+
+    bcrypt.compare(req.body.password, req.user.password).then(isMatch => {
+      if (!isMatch) {
+        errors.password = "Password incorrect";
+        return res.status(401).json(errors);
+      } else {
+        const newUserData = {
+          password: req.body.passwordNew1
+        };
+
+        // Password encryption with salt
+        bcrypt.genSalt(10, (err, salt) => {
+          bcrypt.hash(newUserData.password, salt, (err, hash) => {
+            if (err) throw err;
+            newUserData.password = hash;
+
+            User.findOneAndUpdate(
+              { email: req.user.email },
+              { $set: newUserData },
+              { new: true }
+            )
+              .then(usr => res.json({ success: true }))
+              .catch(err => console.log(err));
+          });
+        });
+      }
     });
   }
 );
