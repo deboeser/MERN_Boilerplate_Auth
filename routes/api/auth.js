@@ -7,8 +7,10 @@ const keys = require("../../config/keys");
 const serverconfig = require("../../config/serverconfig");
 const passport = require("passport");
 
-const validateLoginInput = require("../../validation/login");
-const validateRegisterInput = require("../../validation/register");
+const {
+  validateLoginInput,
+  validateRegisterInput,
+} = require("../../validation/auth");
 
 /**
  * @route   GET api/auth/example
