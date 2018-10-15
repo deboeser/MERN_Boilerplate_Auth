@@ -60,12 +60,13 @@ class SingleAbstract extends Component {
 
     this.state = {
       highlightText: "",
-      doi: "",
-      doiError: "",
-      hyperlink: "",
-      hyperlinkLoading: false,
-      abstract: "",
+      urlLoading: false,
       abstractLoading: false,
+      doiError: "",
+      document: {},
+      doi: "",
+      url: "",
+      abstract: "",
       manualAbstractSplit: [],
       retrievedAbstractSplit: [],
       errors: {}
@@ -93,20 +94,20 @@ class SingleAbstract extends Component {
     if (isEmpty(this.state.doi)) {
       this.setState({ doiError: "Please enter a DOI" });
     } else {
-      this.setState({ doiError: "", hyperlinkLoading: true });
+      this.setState({ doiError: "", urlLoading: true });
 
       axios
         .get(`/api/retrieve/doitourl/${this.state.doi}`)
         .then(res => {
           this.setState({
-            hyperlinkLoading: false,
-            hyperlink: res.data.url
+            urlLoading: false,
+            document: res.data
           });
         })
         .catch(err => {
           this.setState({
-            hyperlinkLoading: false,
-            hyperlink: err.response.data.error.text,
+            urlLoading: false,
+            document: {},
             errors: err.response.data.error
           });
         });
@@ -117,31 +118,26 @@ class SingleAbstract extends Component {
     if (isEmpty(this.state.doi)) {
       this.setState({ doiError: "Please enter a DOI" });
     } else {
-      this.setState({ abstractLoading: true, hyperlinkLoading: true });
+      this.setState({ abstractLoading: true, urlLoading: true });
       axios
         .get(`/api/retrieve/doitoabstract/${this.state.doi}`)
         .then(res => {
           this.setState({
             abstractLoading: false,
-            hyperlinkLoading: false,
-            hyperlink: res.data.url,
-            abstract: res.data.abstract.text
+            urlLoading: false,
+            document: res.data
           });
-          this.onTransferClick(
-            "retrievedAbstractSplit",
-            res.data.abstract.text
-          );
+          this.onTransferClick("retrievedAbstractSplit", res.data.abstract);
         })
         .catch(err => {
           const { error } = err.response.data;
           this.setState({
             abstractLoading: false,
-            hyperlinkLoading: false,
-            abstract: error.abstract ? error.text : "-",
-            hyperlink: error.url ? error.text : err.response.data.url,
+            urlLoading: false,
+            document: {},
             errors: error
           });
-          this.onTransferClick("retrievedAbstractSplit", this.state.abstract);
+          // this.onTransferClick("retrievedAbstractSplit", this.state.abstract);
         });
     }
   };
@@ -150,7 +146,7 @@ class SingleAbstract extends Component {
     const { classes } = this.props;
     const { doiError } = this.state;
     let text;
-    let hyperlink;
+    let url;
     let abstract;
     let manualAbstract;
     let retrievedAbstract;
@@ -171,34 +167,36 @@ class SingleAbstract extends Component {
       });
     }
 
-    if (this.state.hyperlinkLoading) {
-      hyperlink = <LinearProgress />;
-    } else if (!isEmpty(this.state.hyperlink)) {
-      hyperlink = <Typography>{this.state.hyperlink}</Typography>;
+    if (this.state.urlLoading) {
+      url = <LinearProgress />;
+    } else if (this.state.errors.url) {
+      url = <Typography>{this.state.errors.text}</Typography>;
+    } else if (!isEmpty(this.state.document.url)) {
+      url = <Typography>{this.state.document.url}</Typography>;
     } else {
-      hyperlink = <Typography>No link retrieved yet</Typography>;
+      url = <Typography>No link retrieved yet</Typography>;
     }
 
     if (this.state.abstractLoading) {
       abstract = <LinearProgress />;
+    } else if (this.state.errors.abstract) {
+      abstract = <Typography>{this.state.errors.text}</Typography>;
+    } else if (isEmpty(this.state.document)) {
+      abstract = <Typography>-</Typography>;
     } else if (!isEmpty(this.state.retrievedAbstractSplit)) {
-      if (!isEmpty(this.state.retrievedAbstractSplit)) {
-        retrievedAbstract = this.state.retrievedAbstractSplit.map(
-          (item, key) => {
-            let textHightlightClasses;
-            if (!isEmpty(item.classes)) {
-              textHightlightClasses = classNames(
-                ...item.classes.split(" ").map(item => classes[item])
-              );
-            }
-            return (
-              <span key={key} className={textHightlightClasses}>
-                {item.text}
-              </span>
-            );
-          }
+      retrievedAbstract = this.state.retrievedAbstractSplit.map((item, key) => {
+        let textHightlightClasses;
+        if (!isEmpty(item.classes)) {
+          textHightlightClasses = classNames(
+            ...item.classes.split(" ").map(item => classes[item])
+          );
+        }
+        return (
+          <span key={key} className={textHightlightClasses}>
+            {item.text}
+          </span>
         );
-      }
+      });
       abstract = <Typography>{retrievedAbstract}</Typography>;
     } else {
       abstract = <Typography>No abstract retrieved yet</Typography>;
@@ -283,9 +281,9 @@ class SingleAbstract extends Component {
 
               <Divider className={classes.divider} />
               <Typography variant="headline" gutterBottom>
-                Hyperlink to Website
+                URL to Website
               </Typography>
-              {hyperlink}
+              {url}
               <Divider className={classes.divider} />
               <Typography variant="headline" gutterBottom>
                 Abstract
