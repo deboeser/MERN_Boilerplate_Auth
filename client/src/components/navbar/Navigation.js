@@ -88,7 +88,10 @@ class Navigation extends React.Component {
           <main className={classes.content}>
             <div className={classes.toolbar} />
             <div className={classes.contentBody}>
-              <Route path={`${match.path}/dashboard`} component={Dashboard} />
+              <Route
+                path={`${match.path}/dashboard/:key?`}
+                component={Dashboard}
+              />
               <Switch>
                 <PrivateRoute
                   path={`${match.path}/color-tags`}
