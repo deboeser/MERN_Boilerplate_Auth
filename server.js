@@ -7,6 +7,7 @@ const passport = require("passport");
 const auth = require("./routes/api/auth");
 const colortag = require("./routes/api/colortag");
 const retrieve = require("./routes/api/retrieve");
+const document = require("./routes/api/document");
 
 // Init Server, bodyParser, connect to MongoDB
 const app = express();
@@ -32,6 +33,7 @@ app.get("/", (req, res) => res.send("Hello"));
 app.use("/api/auth", auth);
 app.use("/api/colortag", colortag);
 app.use("/api/retrieve", retrieve);
+app.use("/api/document", document);
 
 // Starting server listening
 app.listen(port, () => console.log(`Server running on port ${port}`));
