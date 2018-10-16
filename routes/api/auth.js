@@ -200,12 +200,12 @@ router.post("/reset-password", (req, res) => {
               to: user.email,
               subject: "Reset password for onverio.me",
               text: `http://${req.headers.host}/app/reset-password/${
-                reset._id
+                reset.token
               } with your OTP: ${reset.otp}`,
               html: `<h1>Reset Link</h1><a href='http://${
                 req.headers.host
               }/app/reset-password/${
-                reset._id
+                reset.token
               }'>Click here to reset your password</a><p>Your OTP: ${
                 reset.otp
               }</p>`
@@ -226,33 +226,33 @@ router.post("/reset-password", (req, res) => {
 });
 
 /**
- * @route   POST api/auth/reset-password/:hash
- * @desc    Resets the password for a reset entry with id :hash
+ * @route   POST api/auth/reset-password/:token
+ * @desc    Resets the password for a reset entry with id :token
  * @access  public
  */
-router.post("/reset-password/:hash", (req, res) => {
+router.post("/reset-password/:token", (req, res) => {
   const { errors, isValid } = validateResetPasswordInput(req.body);
 
   if (!isValid) {
     return res.status(400).json(errors);
   }
 
-  Reset.findOne({ _id: req.params.hash }).then(reset => {
+  Reset.findOne({ token: req.params.token }).then(reset => {
     if (!reset) {
-      // Case no otp with given hash
+      // Case no otp with given token
       errors.reset = "Not a valid reset link";
       return res.status(404).json(errors);
     } else {
       if (reset.exp < Date.now()) {
         // Case reset expired
         errors.expired = "Reset link expired";
-        Reset.findOneAndRemove({ _id: req.params.hash })
+        Reset.findOneAndRemove({ _id: reset._id })
           .then(() => res.status(401).json(errors))
           .catch(err => res.status(500).json(err));
       } else if (reset.remainingAttempts === 0) {
         // Case attempts used up
         errors.expired = "Too many failed attempts";
-        Reset.findOneAndRemove({ _id: req.params.hash })
+        Reset.findOneAndRemove({ _id: reset._id })
           .then(() => res.status(401).json(errors))
           .catch(err => res.status(500).json(err));
       } else if (!(reset.otp === String(req.body.otp))) {
@@ -272,7 +272,7 @@ router.post("/reset-password/:hash", (req, res) => {
         return res.status(404).json(errors);
       } else if (reset.otp === String(req.body.otp)) {
         // Case reset password
-        Reset.findOneAndRemove({ _id: req.params.hash })
+        Reset.findOneAndRemove({ _id: reset._id })
           .then(() => {})
           .catch(err => res.status(500).json(err));
 

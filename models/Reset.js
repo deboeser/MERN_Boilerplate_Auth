@@ -1,6 +1,7 @@
 const mongoose = require("mongoose");
 const resetExpiry = require("../config/serverconfig").resetExpiry;
 const Schema = mongoose.Schema;
+const generateToken = require("../utils/generateToken");
 
 const resetSchema = new Schema({
   user: {
@@ -10,6 +11,10 @@ const resetSchema = new Schema({
   date: {
     type: Date,
     default: Date.now
+  },
+  token: {
+    type: String,
+    default: () => generateToken(32)
   },
   exp: {
     type: Date,
