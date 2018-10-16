@@ -21,7 +21,7 @@ const {
  * @desc    Implements example boilerplate route
  * @access  public
  */
-router.get("/example", (req, res) => res.json({ msg: "Example route" }));
+router.get("/example", (req, res) => res.json({ msg: req.headers.host }));
 
 /**
  * @route   POST api/auth/register
@@ -199,10 +199,12 @@ router.post("/reset-password", (req, res) => {
               from: "Corvin from onverio <noreply@deboeser.de>",
               to: user.email,
               subject: "Reset password for onverio.me",
-              text: `localhost:3000/api/auth/${reset._id} with your OTP: ${
-                reset.otp
-              }`,
-              html: `<h1>Reset Link</h1><a href='localhost:3000/api/auth/${
+              text: `http://${req.headers.host}/app/reset-password/${
+                reset._id
+              } with your OTP: ${reset.otp}`,
+              html: `<h1>Reset Link</h1><a href='http://${
+                req.headers.host
+              }/app/reset-password/${
                 reset._id
               }'>Click here to reset your password</a><p>Your OTP: ${
                 reset.otp
