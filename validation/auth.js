@@ -89,8 +89,40 @@ const validateChangePasswordInput = data => {
   };
 };
 
+const validateResetPasswordInput = data => {
+  let errors = {};
+
+  data.otp = !isEmpty(data.otp) ? data.otp : "";
+  data.passwordNew1 = !isEmpty(data.passwordNew1) ? data.passwordNew1 : "";
+  data.passwordNew2 = !isEmpty(data.passwordNew2) ? data.passwordNew2 : "";
+
+  if (Validator.isEmpty(data.otp)) {
+    errors.otp = "OTP is required";
+  } else if (!Validator.isLength(data.otp, { min: 6, max: 6 })) {
+    errors.otp = "OTP must be 6 digits";
+  }
+
+  if (Validator.isEmpty(data.passwordNew1)) {
+    errors.passwordNew1 = "New password is required";
+  } else if (!Validator.isLength(data.passwordNew1, { min: 6, max: 30 })) {
+    errors.passwordNew1 = "Password must be at least 6 characters";
+  }
+
+  if (Validator.isEmpty(data.passwordNew2)) {
+    errors.passwordNew2 = "Confirm new password is required";
+  } else if (!Validator.equals(data.passwordNew1, data.passwordNew2)) {
+    errors.passwordNew2 = "Passwords do not match";
+  }
+
+  return {
+    errors,
+    isValid: isEmpty(errors)
+  };
+};
+
 module.exports = {
   validateLoginInput,
   validateRegisterInput,
-  validateChangePasswordInput
+  validateChangePasswordInput,
+  validateResetPasswordInput
 };
