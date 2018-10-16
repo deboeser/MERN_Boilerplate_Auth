@@ -1,4 +1,5 @@
 /node_modules
+/config/emailconfig.js
 package-lock.json
 sandbox.js
 .vscode
