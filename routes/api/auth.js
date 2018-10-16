@@ -7,6 +7,7 @@ const jwt = require("jsonwebtoken");
 const keys = require("../../config/keys");
 const serverconfig = require("../../config/serverconfig");
 const passport = require("passport");
+const sendMail = require("../../utils/sendMail");
 
 const {
   validateLoginInput,
@@ -194,8 +195,27 @@ router.post("/reset-password", (req, res) => {
         new Reset(newReset)
           .save()
           .then(reset => {
-            // TODO: send email with link and otp
-            return res.json(reset);
+            const mailOptions = {
+              from: "Corvin from onverio <noreply@deboeser.de>",
+              to: user.email,
+              subject: "Reset password for onverio.me",
+              text: `localhost:3000/api/auth/${reset._id} with your OTP: ${
+                reset.otp
+              }`,
+              html: `<h1>Reset Link</h1><a href='localhost:3000/api/auth/${
+                reset._id
+              }'>Click here to reset your password</a><p>Your OTP: ${
+                reset.otp
+              }</p>`
+            };
+            sendMail(mailOptions)
+              .then(success => {
+                return res.json(success);
+              })
+              .catch(err => {
+                console.log(err);
+                return res.status(500).json({ success: false });
+              });
           })
           .catch(err => res.status(400).json(err));
       });
