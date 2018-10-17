@@ -207,6 +207,7 @@ class ResetPassword extends Component {
               error={!isEmpty(errors.otp)}
               helperText={errors.otp}
               onChange={this.onChange.bind(this)}
+              autoComplete="off"
               fullWidth
             />
             <TextField
