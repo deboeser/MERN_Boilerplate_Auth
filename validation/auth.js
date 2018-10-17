@@ -89,6 +89,23 @@ const validateChangePasswordInput = data => {
   };
 };
 
+const validateRequestResetInput = data => {
+  let errors = {};
+
+  data.email = !isEmpty(data.email) ? data.email : "";
+
+  if (Validator.isEmpty(data.email)) {
+    errors.email = "Email is required";
+  } else if (!Validator.isEmail(data.email)) {
+    errors.email = "Email is invalid";
+  }
+
+  return {
+    errors,
+    isValid: isEmpty(errors)
+  };
+};
+
 const validateResetPasswordInput = data => {
   let errors = {};
 
@@ -123,6 +140,7 @@ const validateResetPasswordInput = data => {
 module.exports = {
   validateLoginInput,
   validateRegisterInput,
+  validateRequestResetInput,
   validateChangePasswordInput,
   validateResetPasswordInput
 };

@@ -12,6 +12,7 @@ const sendMail = require("../../utils/sendMail");
 const {
   validateLoginInput,
   validateRegisterInput,
+  validateRequestResetInput,
   validateChangePasswordInput,
   validateResetPasswordInput
 } = require("../../validation/auth");
@@ -174,7 +175,11 @@ router.post(
  * @access  public
  */
 router.post("/reset-password", (req, res) => {
-  const errors = {};
+  const { errors, isValid } = validateRequestResetInput(req.body);
+
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
   User.findOne({ email: req.body.email }).then(user => {
     if (!user) {
@@ -199,12 +204,12 @@ router.post("/reset-password", (req, res) => {
               from: "Corvin from onverio <noreply@deboeser.de>",
               to: user.email,
               subject: "Reset password for onverio.me",
-              text: `http://${req.headers.host}/app/reset-password/${
+              text: `http://${req.headers["x-forwarded-host"]}/reset-password/${
                 reset.token
               } with your OTP: ${reset.otp}`,
               html: `<h1>Reset Link</h1><a href='http://${
-                req.headers.host
-              }/app/reset-password/${
+                req.headers["x-forwarded-host"]
+              }/reset-password/${
                 reset.token
               }'>Click here to reset your password</a><p>Your OTP: ${
                 reset.otp
@@ -221,6 +226,31 @@ router.post("/reset-password", (req, res) => {
           })
           .catch(err => res.status(400).json(err));
       });
+    }
+  });
+});
+
+router.get("/reset-password/is-valid/:token", (req, res) => {
+  const errors = {};
+
+  Reset.findOne({ token: req.params.token }).then(reset => {
+    if (!reset) {
+      // Case no otp with given token
+      errors.invalid = "Not a valid reset link";
+      return res.status(404).json(errors);
+    } else {
+      if (reset.exp < Date.now()) {
+        // Case reset expired
+        errors.invalid = "Reset link expired";
+        Reset.findOneAndRemove({ _id: reset._id })
+          .then(() => res.status(401).json(errors))
+          .catch(err => res.status(500).json(err));
+      } else {
+        return res.json({
+          // validFor: Math.floor((reset.exp - Date.now()) / 1000)
+          validUntil: reset.exp
+        });
+      }
     }
   });
 });
@@ -247,29 +277,33 @@ router.post("/reset-password/:token", (req, res) => {
         // Case reset expired
         errors.expired = "Reset link expired";
         Reset.findOneAndRemove({ _id: reset._id })
-          .then(() => res.status(401).json(errors))
-          .catch(err => res.status(500).json(err));
-      } else if (reset.remainingAttempts === 0) {
-        // Case attempts used up
-        errors.expired = "Too many failed attempts";
-        Reset.findOneAndRemove({ _id: reset._id })
-          .then(() => res.status(401).json(errors))
+          .then(obj => res.status(401).json(errors))
           .catch(err => res.status(500).json(err));
       } else if (!(reset.otp === String(req.body.otp))) {
         // Case otp wrong
-        const updateReset = {
-          remainingAttempts: reset.remainingAttempts - 1
-        };
+        if (reset.remainingAttempts === 1) {
+          // Case attempts used up
+          errors.expired = "Too many failed attempts";
+          Reset.findOneAndRemove({ _id: reset._id })
+            .then(obj => res.status(401).json(errors))
+            .catch(err => res.status(500).json(err));
+        } else {
+          const updateReset = {
+            remainingAttempts: reset.remainingAttempts - 1
+          };
 
-        Reset.findOneAndUpdate(
-          { _id: reset._id },
-          { $set: updateReset },
-          { new: true }
-        ).then(reset => {});
+          Reset.findOneAndUpdate(
+            { _id: reset._id },
+            { $set: updateReset },
+            { new: true }
+          )
+            .then(reset => {})
+            .catch(err => console.log(err));
 
-        errors.otp = "Otp is incorrect";
-        errors.remaining = updateReset.remainingAttempts;
-        return res.status(404).json(errors);
+          errors.otp = "OTP is incorrect";
+          errors.remaining = updateReset.remainingAttempts;
+          return res.status(401).json(errors);
+        }
       } else if (reset.otp === String(req.body.otp)) {
         // Case reset password
         Reset.findOneAndRemove({ _id: reset._id })
