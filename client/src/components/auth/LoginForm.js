@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 import withStyles from "@material-ui/core/styles/withStyles";
 
@@ -124,13 +125,15 @@ class LoginForm extends Component {
             </LoadingButton>
           </div>
 
-          <Typography
-            className={classes.forgot}
-            variant="caption"
-            align="center"
-          >
-            I forgot my password
-          </Typography>
+          <Link to="/forgot-password" onClick={this.forceUpdate}>
+            <Typography
+              className={classes.forgot}
+              variant="caption"
+              align="center"
+            >
+              I forgot my password
+            </Typography>
+          </Link>
         </form>
       </div>
     );

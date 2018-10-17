@@ -12,8 +12,9 @@ import store from "./store";
 import setAuthToken from "./utils/setAuthToken";
 import { setCurrentUser, logoutUser } from "./actions/authActions";
 
-import Dashboard from "./components/dashboard/Dashboard";
 import Navigation from "./components/navbar/Navigation";
+import RequestReset from "./components/auth/RequestReset";
+import ResetPassword from "./components/auth/ResetPassword";
 import Snack from "./components/common/Snack";
 
 import "./App.css";
@@ -55,6 +56,8 @@ class App extends Component {
           <Router>
             <div className="App" id="app">
               <Route path="/app" component={Navigation} />
+              <Route path="/forgot-password" component={RequestReset} />
+              <Route path="/reset-password/:token?" component={ResetPassword} />
             </div>
           </Router>
           <Snack />
