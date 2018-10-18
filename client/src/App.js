@@ -44,6 +44,9 @@ const theme = createMuiTheme({
   palette: {
     primary: blue,
     secondary: blue
+  },
+  singleDialog: {
+    width: 400
   }
 });
 

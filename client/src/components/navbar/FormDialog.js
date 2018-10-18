@@ -13,7 +13,7 @@ const styles = theme => ({
     paddingBottom: 0,
     paddingLeft: 0,
     paddingRight: 0,
-    maxWidth: 400
+    maxWidth: theme.singleDialog.width
   }
 });
 

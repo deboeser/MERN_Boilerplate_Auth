@@ -24,7 +24,7 @@ const styles = theme => ({
     marginRight: theme.spacing.unit * 3
   },
   paper: {
-    maxWidth: 400,
+    maxWidth: theme.singleDialog.width,
     marginLeft: "auto",
     marginRight: "auto",
     padding: theme.spacing.unit * 3
