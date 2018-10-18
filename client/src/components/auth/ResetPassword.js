@@ -54,19 +54,19 @@ const renderer = ({ hours, minutes, seconds, completed }) => {
     return <span>00:00</span>;
   } else if (minutes >= 2) {
     return <span>{minutes} minutes</span>;
-  } else if (minutes == 0) {
+  } else if (Number(minutes) === 0) {
     return (
       <span>
         {seconds} second
-        {seconds == 1 ? "" : "s"}
+        {Number(seconds) === 1 ? "" : "s"}
       </span>
     );
   } else {
     return (
       <span>
         {minutes} minute
-        {minutes == 1 ? "" : "s"} and {seconds} second
-        {seconds == 1 ? "" : "s"}
+        {Number(minutes) === 1 ? "" : "s"} and {seconds} second
+        {Number(seconds) === 1 ? "" : "s"}
       </span>
     );
   }
@@ -129,9 +129,7 @@ class ResetPassword extends Component {
         `/api/auth/reset-password/${this.props.match.params.token}`,
         resetRequest
       )
-      .then(res => {
-        this.setState({ pwReset: true, resetLoading: false });
-      })
+      .then(res => this.setState({ pwReset: true, resetLoading: false }))
       .catch(err => {
         this.setState({
           errors: err.response.data,
