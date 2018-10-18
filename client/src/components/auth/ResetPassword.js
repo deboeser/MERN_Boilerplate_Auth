@@ -248,7 +248,7 @@ class ResetPassword extends Component {
           <Typography align="left" gutterBottom>
             Your password was changed successfully. You can now login again!
           </Typography>
-          <Link to="/app">
+          <Link to="/app/login">
             <Button
               className={classes.submit}
               variant="contained"

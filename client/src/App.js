@@ -58,7 +58,7 @@ class App extends Component {
         <MuiThemeProvider theme={theme}>
           <Router>
             <div className="App" id="app">
-              <Route path="/app" component={Navigation} />
+              <Route path="/app/:login?" component={Navigation} />
               <Route path="/forgot-password" component={RequestReset} />
               <Route path="/reset-password/:token?" component={ResetPassword} />
             </div>

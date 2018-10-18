@@ -53,6 +53,12 @@ class Navigation extends React.Component {
     };
   }
 
+  componentDidMount() {
+    console.log(this.props.match.params.login);
+    if (this.props.match.params.login === "login") {
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth) {
       this.setState({ auth: nextProps.auth });
@@ -80,6 +86,7 @@ class Navigation extends React.Component {
           <NavBar
             open={this.state.open}
             handleDrawerOpen={this.handleDrawerOpen}
+            externalOpen={this.props.match.params.login === "login"}
           />
           <NavDrawer
             open={this.state.open}

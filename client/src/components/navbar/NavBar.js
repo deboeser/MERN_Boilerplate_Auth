@@ -51,6 +51,12 @@ const styles = theme => ({
 });
 
 class NavBar extends Component {
+  componentDidMount() {
+    if (this.props.loginOpen) {
+      this.setState({ externalOpen: true });
+    }
+  }
+
   componentWillReceiveProps(nextProps) {
     if (nextProps.auth) {
       this.setState({ auth: nextProps.auth });
@@ -112,6 +118,7 @@ class NavBar extends Component {
             loginDialog = node;
           }}
           resetErrors={this.props.resetErrors}
+          externalOpen={this.props.externalOpen}
         />
       </div>
     );

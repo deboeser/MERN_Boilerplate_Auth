@@ -22,6 +22,12 @@ class FormDialog extends React.Component {
     open: false
   };
 
+  componentDidMount() {
+    if (this.props.externalOpen) {
+      this.setState({ open: true });
+    }
+  }
+
   handleClickOpen = () => {
     this.setState({ open: true });
   };
